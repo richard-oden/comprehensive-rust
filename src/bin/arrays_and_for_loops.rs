@@ -2,10 +2,12 @@
 #![allow(unused_variables, dead_code)]
 
 fn transpose(matrix: [[i32; 3]; 3]) -> [[i32; 3]; 3] {
-    let transposed: [[i32; 3]; 3] = [[0; 3]; 3];
+    let mut transposed: [[i32; 3]; 3] = [[0; 3]; 3];
 
-    for n in matrix {
-
+    for y in 0..3 {
+        for x in 0..3 {
+            transposed[x][y] = matrix[y][x];
+        }
     }
 
     return transposed;
@@ -40,7 +42,7 @@ fn main() {
     println!("matrix:");
     pretty_print(&matrix);
 
-    // let transposed = transpose(matrix);
-    // println!("transposed:");
-    // pretty_print(&transposed);
+    let transposed = transpose(matrix);
+    println!("transposed:");
+    pretty_print(&transposed);
 }
