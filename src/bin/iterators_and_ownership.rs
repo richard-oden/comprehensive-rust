@@ -16,14 +16,20 @@
 //     println!("v0: {v0:?}");
 // }
 
+fn print_type_of<T>(_: T) {
+    println!("{}", std::any::type_name::<T>());
+}
+
 fn main() {
     let v: Vec<String> = vec![String::from("foo"), String::from("bar")];
 
+    // word is borrowed
     for word in &v {
-        println!("word: {word}");
+        print_type_of(word);
     }
 
+    // word is not borrwed
     for word in v {
-        println!("word: {word}");
+        print_type_of(word);
     }
 }
