@@ -1,6 +1,9 @@
 // TODO: remove this when you're done with your implementation.
 #![allow(unused_variables, dead_code)]
 
+use std::ops::Add;
+
+#[derive(Debug, PartialEq)]
 pub struct Point {
     x: i32,
     y: i32
@@ -15,8 +18,19 @@ impl Point {
         f64::from(self.x.pow(2) + self.y.pow(2)).sqrt()
     }
 
-    pub fn dist(&self, other: Point) -> f64 {
+    pub fn dist(&self, other: Self) -> f64 {
         f64::from((other.x - self.x).pow(2) + (other.y - self.y).pow(2)).sqrt()
+    }
+}
+
+impl Add for Point {
+    type Output = Self;
+
+    fn add(self, other: Self) -> Self {
+        Self {
+            x: self.x + other.x,
+            y: self.y + other.y
+        }
     }
 }
 
@@ -62,12 +76,12 @@ mod tests {
         assert_eq!(round_two_digits(p1.dist(p2)), 5.00);
     }
 
-    // #[test]
-    // fn test_point_add() {
-    //     let p1 = Point::new(16, 16);
-    //     let p2 = p1 + Point::new(-4, 3);
-    //     assert_eq!(p2, Point::new(12, 19));
-    // }
+    #[test]
+    fn test_point_add() {
+        let p1 = Point::new(16, 16);
+        let p2 = p1 + Point::new(-4, 3);
+        assert_eq!(p2, Point::new(12, 19));
+    }
 
     // #[test]
     // fn test_polygon_left_most_point() {
