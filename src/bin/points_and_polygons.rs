@@ -3,7 +3,7 @@
 
 use std::ops::Add;
 
-#[derive(Debug, PartialEq)]
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Point {
     x: i32,
     y: i32
@@ -35,11 +35,23 @@ impl Add for Point {
 }
 
 pub struct Polygon {
-    // add fields
+    points: Vec<Point>
 }
 
 impl Polygon {
-    // add methods
+    pub fn new() -> Self {
+        Polygon {
+            points: Vec::<Point>::new()
+        }
+    }
+
+    pub fn add_point(&mut self, point: Point) {
+        self.points.push(point)
+    }
+
+    pub fn left_most_point(&self) -> Option<Point> {
+        self.points.iter().min_by_key(|point| point.x).copied()
+    }
 }
 
 pub struct Circle {
@@ -83,16 +95,16 @@ mod tests {
         assert_eq!(p2, Point::new(12, 19));
     }
 
-    // #[test]
-    // fn test_polygon_left_most_point() {
-    //     let p1 = Point::new(12, 13);
-    //     let p2 = Point::new(16, 16);
+    #[test]
+    fn test_polygon_left_most_point() {
+        let p1 = Point::new(12, 13);
+        let p2 = Point::new(16, 16);
 
-    //     let mut poly = Polygon::new();
-    //     poly.add_point(p1);
-    //     poly.add_point(p2);
-    //     assert_eq!(poly.left_most_point(), Some(p1));
-    // }
+        let mut poly = Polygon::new();
+        poly.add_point(p1);
+        poly.add_point(p2);
+        assert_eq!(poly.left_most_point(), Some(p1));
+    }
 
     // #[test]
     // fn test_polygon_iter() {
