@@ -14,6 +14,10 @@ impl Point {
     pub fn magnitude(&self) -> f64 {
         f64::from(self.x.pow(2) + self.y.pow(2)).sqrt()
     }
+
+    pub fn dist(&self, other: Point) -> f64 {
+        f64::from((other.x - self.x).pow(2) + (other.y - self.y).pow(2)).sqrt()
+    }
 }
 
 pub struct Polygon {
@@ -51,12 +55,12 @@ mod tests {
         assert_eq!(round_two_digits(p1.magnitude()), 17.69);
     }
 
-    // #[test]
-    // fn test_point_dist() {
-    //     let p1 = Point::new(10, 10);
-    //     let p2 = Point::new(14, 13);
-    //     assert_eq!(round_two_digits(p1.dist(p2)), 5.00);
-    // }
+    #[test]
+    fn test_point_dist() {
+        let p1 = Point::new(10, 10);
+        let p2 = Point::new(14, 13);
+        assert_eq!(round_two_digits(p1.dist(p2)), 5.00);
+    }
 
     // #[test]
     // fn test_point_add() {
