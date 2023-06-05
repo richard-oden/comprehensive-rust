@@ -75,7 +75,7 @@ impl Polygon {
             i += 1;
         }
 
-        return length;
+        length
     }
 }
 
@@ -85,19 +85,25 @@ pub struct Circle {
 }
 
 impl Circle {
-    // add methods
+    pub fn new(center: Point, radius: i32) -> Self {
+        Circle { center, radius }
+    }
+
+    pub fn circumference(&self) -> f64 {
+        2.0 * std::f64::consts::PI * f64::from(self.radius)
+    }
 }
 
 pub enum Shape {
     Polygon(Polygon),
-    Circle(Circle),
+    Circle(Circle)
 }
 
 impl Shape {
     pub fn perimeter(&self) -> f64 {
         match self {
             Shape::Polygon(poly) => poly.length(),
-            Shape::Circle(circle) => todo!(),//circle.circumference()
+            Shape::Circle(circle) => circle.circumference()
         }
     }
 }
@@ -174,7 +180,7 @@ mod tests {
         poly.add_point(Point::new(16, 16));
         let shapes = vec![
             Shape::from(poly),
-            //Shape::from(Circle::new(Point::new(10, 20), 5)),
+            Shape::from(Circle::new(Point::new(10, 20), 5)),
         ];
         let perimeters = shapes
             .iter()
