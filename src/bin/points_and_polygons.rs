@@ -57,10 +57,31 @@ impl Polygon {
     pub fn left_most_point(&self) -> Option<Point> {
         self.iter().min_by_key(|point| point.x).copied()
     }
+
+    pub fn length(&self) -> f64 {
+        let mut length = 0.0;
+        let mut i = 0;
+
+        while i < self.points.len() {
+            let other: Point;
+
+            if self.points[i] == self.points[self.points.len() - 1] {
+                other = self.points[0];
+            } else {
+                other = self.points[i + 1];
+            }
+
+            length += self.points[i].dist(other);
+            i += 1;
+        }
+
+        return length;
+    }
 }
 
 pub struct Circle {
-    // add fields
+    center: Point,
+    radius: i32
 }
 
 impl Circle {
@@ -70,6 +91,27 @@ impl Circle {
 pub enum Shape {
     Polygon(Polygon),
     Circle(Circle),
+}
+
+impl Shape {
+    pub fn perimeter(&self) -> f64 {
+        match self {
+            Shape::Polygon(poly) => poly.length(),
+            Shape::Circle(circle) => todo!(),//circle.circumference()
+        }
+    }
+}
+
+impl From<Polygon> for Shape {
+    fn from(poly: Polygon) -> Self {
+        Shape::Polygon(poly)
+    }
+}
+
+impl From<Circle> for Shape {
+    fn from(circle: Circle) -> Self {
+        Shape::Circle(circle)
+    }
 }
 
 #[cfg(test)]
@@ -124,23 +166,23 @@ mod tests {
         assert_eq!(points, vec![Point::new(12, 13), Point::new(16, 16)]);
     }
 
-    // #[test]
-    // fn test_shape_perimeters() {
-    //     let mut poly = Polygon::new();
-    //     poly.add_point(Point::new(12, 13));
-    //     poly.add_point(Point::new(17, 11));
-    //     poly.add_point(Point::new(16, 16));
-    //     let shapes = vec![
-    //         Shape::from(poly),
-    //         Shape::from(Circle::new(Point::new(10, 20), 5)),
-    //     ];
-    //     let perimeters = shapes
-    //         .iter()
-    //         .map(Shape::perimeter)
-    //         .map(round_two_digits)
-    //         .collect::<Vec<_>>();
-    //     assert_eq!(perimeters, vec![15.48, 31.42]);
-    // }
+    #[test]
+    fn test_shape_perimeters() {
+        let mut poly = Polygon::new();
+        poly.add_point(Point::new(12, 13));
+        poly.add_point(Point::new(17, 11));
+        poly.add_point(Point::new(16, 16));
+        let shapes = vec![
+            Shape::from(poly),
+            //Shape::from(Circle::new(Point::new(10, 20), 5)),
+        ];
+        let perimeters = shapes
+            .iter()
+            .map(Shape::perimeter)
+            .map(round_two_digits)
+            .collect::<Vec<_>>();
+        assert_eq!(perimeters, vec![15.48, 31.42]);
+    }
 }
 
 #[allow(dead_code)]
