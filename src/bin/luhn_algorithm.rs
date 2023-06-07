@@ -1,8 +1,23 @@
-// TODO: remove this when you're done with your implementation.
 #![allow(unused_variables, dead_code)]
 
 pub fn luhn(cc_number: &str) -> bool {
-    unimplemented!()
+    let chars: Vec<char> = cc_number.chars().filter(|c| !c.is_whitespace()).collect();
+
+    if chars.len() < 2 || chars.iter().any(|c| !c.is_numeric()) {
+        return false;
+    }
+
+    let mut digits: Vec<u32> = chars.iter().map(|c| c.to_digit(10).unwrap()).collect();
+    let max_index = digits.len() - 1;
+
+    for i in (0..max_index).rev().step_by(2) {
+        let new_value = (digits[i] * 2).to_string().chars().map(|c| c.to_digit(10).unwrap()).sum();
+        digits[i] = new_value;
+    }
+
+    let sum = digits.iter().sum::<u32>();
+
+    sum.to_string().ends_with('0')
 }
 
 #[test]
