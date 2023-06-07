@@ -1,5 +1,3 @@
-#![allow(unused_variables, dead_code)]
-
 pub fn luhn(cc_number: &str) -> bool {
     let chars: Vec<char> = cc_number.chars().filter(|c| !c.is_whitespace()).collect();
 
