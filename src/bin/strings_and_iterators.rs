@@ -2,7 +2,20 @@
 #![allow(unused_variables, dead_code)]
 
 pub fn prefix_matches(prefix: &str, request_path: &str) -> bool {
-    unimplemented!()
+    let prefix_segments: Vec<&str> = prefix.split('/').collect();
+    let request_segments: Vec<&str> = request_path.split('/').collect();
+
+    if prefix_segments.len() > request_segments.len() {
+        return false;
+    }
+
+    for (i, segment) in prefix_segments.iter().enumerate() {
+        if segment != &"*" && segment != &request_segments[i] {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 #[test]
