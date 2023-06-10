@@ -70,31 +70,38 @@ impl Window {
 
 impl Widget for Label {
     fn width(&self) -> usize {
-        unimplemented!()
+        self.label.len()
     }
 
     fn draw_into(&self, buffer: &mut dyn std::fmt::Write) {
-        unimplemented!()
+        buffer.write_str(&self.label);
     }
 }
 
 impl Widget for Button {
     fn width(&self) -> usize {
-        unimplemented!()
+        self.label.width() + 4
     }
 
     fn draw_into(&self, buffer: &mut dyn std::fmt::Write) {
-        unimplemented!()
+        buffer.write_str("| ");
+        self.label.draw_into(buffer);
+        buffer.write_str(" |");
     }
 }
 
 impl Widget for Window {
     fn width(&self) -> usize {
-        unimplemented!()
+        self.inner_width()
     }
 
     fn draw_into(&self, buffer: &mut dyn std::fmt::Write) {
-        unimplemented!()
+        buffer.write_str(&self.title);
+
+        for widget in &self.widgets {
+            buffer.write_str("\n");
+            widget.draw_into(buffer);
+        }
     }
 }
 
