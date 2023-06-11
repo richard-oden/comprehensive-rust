@@ -84,9 +84,9 @@ impl Widget for Button {
     }
 
     fn draw_into(&self, buffer: &mut dyn std::fmt::Write) {
-        buffer.write_str("| ").expect("Failed to draw button left border.");
+        buffer.write_str("[ ").expect("Failed to draw button left border.");
         self.label.draw_into(buffer);
-        buffer.write_str(" |").expect("Failed to draw button right border.");
+        buffer.write_str(" ]").expect("Failed to draw button right border.");
     }
 }
 
@@ -96,12 +96,22 @@ impl Widget for Window {
     }
 
     fn draw_into(&self, buffer: &mut dyn std::fmt::Write) {
-        buffer.write_str(&self.title).expect("Failed to draw window title.");
+        let width = self.width();
+
+        buffer.write_str(&format!("╒{:}╕", "═".repeat(width))).expect("Failed to window top border.");
+        buffer.write_str(&format!("\n│{:^width$}│", &self.title)).expect("Failed to window title.");
+        buffer.write_str(&format!("\n├{:}┤", "─".repeat(width))).expect("Failed to window title bottom border.");
 
         for widget in &self.widgets {
-            buffer.write_str("\n").expect("Failed to draw window newline.");
+            let padding_left = (width - widget.width()) / 2;
+            let padding_right = width - (padding_left + widget.width());
+
+            buffer.write_str(&format!("\n│{:}", " ".repeat(padding_left))).expect("Failed to draw window widget left padding.");
             widget.draw_into(buffer);
+            buffer.write_str(&format!("{:}│", " ".repeat(padding_right))).expect("Failed to draw window widget right padding.");
         }
+
+        buffer.write_str(&format!("\n╘{:}╛", "═".repeat(width))).expect("Failed to draw window bottom border.");
     }
 }
 
