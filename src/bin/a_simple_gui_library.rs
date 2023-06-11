@@ -74,7 +74,7 @@ impl Widget for Label {
     }
 
     fn draw_into(&self, buffer: &mut dyn std::fmt::Write) {
-        buffer.write_str(&self.label);
+        buffer.write_str(&self.label).expect("Failed to draw label.");
     }
 }
 
@@ -84,9 +84,9 @@ impl Widget for Button {
     }
 
     fn draw_into(&self, buffer: &mut dyn std::fmt::Write) {
-        buffer.write_str("| ");
+        buffer.write_str("| ").expect("Failed to draw button left border.");
         self.label.draw_into(buffer);
-        buffer.write_str(" |");
+        buffer.write_str(" |").expect("Failed to draw button right border.");
     }
 }
 
@@ -96,10 +96,10 @@ impl Widget for Window {
     }
 
     fn draw_into(&self, buffer: &mut dyn std::fmt::Write) {
-        buffer.write_str(&self.title);
+        buffer.write_str(&self.title).expect("Failed to draw window title.");
 
         for widget in &self.widgets {
-            buffer.write_str("\n");
+            buffer.write_str("\n").expect("Failed to draw window newline.");
             widget.draw_into(buffer);
         }
     }
