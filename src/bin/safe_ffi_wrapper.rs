@@ -56,7 +56,15 @@ impl DirectoryIterator {
     fn new(path: &str) -> Result<DirectoryIterator, String> {
         // Call opendir and return a Ok value if that worked,
         // otherwise return Err with a message.
-        unimplemented!()
+        
+        let path = CString::new(path).unwrap();
+        let dir = unsafe { ffi::opendir(path.as_ptr()) };
+        
+        if dir.is_null() {
+            Err(format!("Failed to open path: {:?}", path))
+        } else {
+            Ok(DirectoryIterator { path, dir })
+        }
     }
 }
 
