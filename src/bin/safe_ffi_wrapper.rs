@@ -88,7 +88,11 @@ impl Iterator for DirectoryIterator {
 impl Drop for DirectoryIterator {
     fn drop(&mut self) {
         // Call closedir as needed.
-        unimplemented!()
+        if !self.dir.is_null() {
+            if unsafe { ffi::closedir((self.dir))} != 0 {
+                panic!("Could not close {:?}", self.path)
+            }
+        }
     }
 }
 
