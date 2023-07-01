@@ -72,7 +72,16 @@ impl Iterator for DirectoryIterator {
     type Item = OsString;
     fn next(&mut self) -> Option<OsString> {
         // Keep calling readdir until we get a NULL pointer back.
-        unimplemented!()
+        let dirent = unsafe { ffi::readdir(self.dir) };
+
+        if dirent.is_null() {
+            return None;
+        }
+
+        let d_name = unsafe { CStr::from_ptr((*dirent).d_name.as_ptr()) };
+        let os_str = OsStr::from_bytes(d_name.to_bytes());
+
+        Some(os_str.to_owned())
     }
 }
 
