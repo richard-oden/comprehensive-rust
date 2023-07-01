@@ -1,6 +1,3 @@
-// TODO: remove this when you're done with your implementation.
-#![allow(unused_imports, unused_variables, dead_code)]
-
 mod ffi {
     use std::os::raw::{c_char, c_int};
     #[cfg(not(target_os = "macos"))]
@@ -89,7 +86,7 @@ impl Drop for DirectoryIterator {
     fn drop(&mut self) {
         // Call closedir as needed.
         if !self.dir.is_null() {
-            if unsafe { ffi::closedir((self.dir))} != 0 {
+            if unsafe { ffi::closedir(self.dir)} != 0 {
                 panic!("Could not close {:?}", self.path)
             }
         }
